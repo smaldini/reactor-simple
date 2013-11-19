@@ -15,8 +15,7 @@ import reactor.core.spec.Reactors;
 import reactor.event.Event;
 import reactor.spring.context.config.EnableReactor;
 
-import static reactor.event.selector.Selectors.$;
-import static reactor.event.selector.Selectors.R;
+import static reactor.event.selector.Selectors.*;
 
 /**
  * @author Jon Brisbin
@@ -32,15 +31,28 @@ public class SimpleReactorTests {
 
 	@Test
 	public void testObjectSelector() {
-		reactor.<Event<String>>on($("test"), ev -> LOG.info("testObjectSelector: {}", ev));
+		reactor.<Event<String>>on($("test"),
+		                          ev -> LOG.info("testObjectSelector: {}",
+		                                         ev));
 		reactor.notify("test", Event.wrap("Hello World!"));
 	}
 
 	@Test
 	public void testRegexSelector() {
 		reactor.<Event<String>>on(R("test.(.+)"),
-		                          ev -> LOG.info("testRegexSelector: {}, header: {}", ev, ev.getHeaders().get("group1")));
+		                          ev -> LOG.info("testRegexSelector: {}, header: {}",
+		                                         ev,
+		                                         ev.getHeaders().get("group1")));
 		reactor.notify("test.1", Event.wrap("Hello World!"));
+	}
+
+	@Test
+	public void testUriTemplateSelector() {
+		reactor.<Event<String>>on(U("/test/{segment}"),
+		                          ev -> LOG.info("testUriTemplateSelector: {}, header: {}",
+		                                         ev,
+		                                         ev.getHeaders().get("segment")));
+		reactor.notify("/test/1", Event.wrap("Hello World!"));
 	}
 
 	@Configuration
