@@ -3,6 +3,7 @@ package org.projectreactor.simple;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationContextLoader;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -18,7 +19,8 @@ import reactor.spring.context.config.EnableReactor;
  * @author Jon Brisbin
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration
+@ContextConfiguration(classes = SimpleComposableTests.ComposableTestConfig.class,
+                      loader = SpringApplicationContextLoader.class)
 public class SimpleComposableTests {
 
 	@Autowired

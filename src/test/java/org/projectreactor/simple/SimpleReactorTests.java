@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationContextLoader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
@@ -21,7 +22,8 @@ import static reactor.event.selector.Selectors.*;
  * @author Jon Brisbin
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration
+@ContextConfiguration(classes = SimpleReactorTests.ReactorTestConfig.class,
+                      loader = SpringApplicationContextLoader.class)
 public class SimpleReactorTests {
 
 	static final Logger LOG = LoggerFactory.getLogger(SimpleReactorTest.class);
