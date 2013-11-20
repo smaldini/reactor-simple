@@ -57,6 +57,18 @@ public class SimpleReactorTests {
 		reactor.notify("/test/1", Event.wrap("Hello World!"));
 	}
 
+	@Test
+	public void testSendReceive() {
+		reactor.<Event<String>, String>receive($("request"),
+		                                       ev -> {
+			                                       LOG.info("testSendReceive: {}", ev);
+			                                       return "Hello " + ev.getData() + "!";
+		                                       });
+		reactor.<Event<String>>on($("reply"),
+		                          ev -> LOG.info("testSendReceive[reply]: {}", ev.getData()));
+		reactor.send("request", Event.wrap("World", "reply"));
+	}
+
 	@Configuration
 	@EnableReactor
 	static class ReactorTestConfig {

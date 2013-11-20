@@ -19,7 +19,7 @@ public class SimpleReactorTest {
 	}
 
 	public void publish(String msg) {
-		reactor.notify("test", Event.wrap(msg));
+		reactor.notify("test.something", Event.wrap(msg));
 	}
 
 }
