@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import reactor.core.Environment;
-import reactor.core.Reactor;
 import reactor.core.processor.Operation;
 import reactor.core.processor.Processor;
 import reactor.core.processor.spec.ProcessorSpec;
@@ -39,7 +38,7 @@ public class SimpleProcessorTests {
 	@Autowired
 	Environment env;
 	int batchSize = 1024;
-	int runs      = 250000 * batchSize;
+	int runs      = 50000 * batchSize;
 	Random                      rand;
 	CountDownLatch              latch;
 	Processor<Buffer>           proc;
@@ -55,7 +54,7 @@ public class SimpleProcessorTests {
 		latch = new CountDownLatch(runs);
 
 		Consumer<Buffer> consumer = buff -> {
-			//buff.readLong();
+			buff.readLong();
 			latch.countDown();
 		};
 		Supplier<Processor<Buffer>> creator = () -> new ProcessorSpec<Buffer>()
@@ -125,7 +124,7 @@ public class SimpleProcessorTests {
 		start();
 		for(long l = 0; l < (runs / batchSize); l++) {
 			proc.batch(batchSize, buff -> {
-				//buff.append(counter.incrementAndGet()).flip();
+				buff.append(counter.incrementAndGet()).flip();
 			});
 		}
 		stop("Batch Publish");
